@@ -9,4 +9,11 @@ ROLE_CHOICE = (
     (3, 'Patient'),
 )
 
+from .models_rating import Rating
+from .models_day_week import DayWeek
+from .models_county import County
+from .models_district import District
+from .models_neighborhood import Neighborhood
+from .models_address import Address
+from .models_speciality import Speciality
 from .models_profile import Profile

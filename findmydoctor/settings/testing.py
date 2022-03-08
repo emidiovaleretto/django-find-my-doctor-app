@@ -1,9 +1,11 @@
 from .settings import *
 from decouple import config
 
-DEBUG = config("DEBUG")
-SECRET_KEY = config("SECRET_KEY_TESTING")
-
+if os.path.exists('env.py'):
+    import env
+    
+SECRET_KEY = os.environ.get("SECRET_KEY_TESTING")
+DEBUG = os.environ.get("DEBUG_TESTING")
 # ALLOWED_HOSTS
 ALLOWED_HOSTS=['localhost', '127.0.0.1']
 

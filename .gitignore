@@ -9,3 +9,4 @@ cloudinary_python.txt
 .env
 env.py
 db.sqlite3
+media/

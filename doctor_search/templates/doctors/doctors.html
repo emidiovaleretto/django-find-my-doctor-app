@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Doctors{% endblock %}
+{% block content %}
+<div id="content">
+    <div class="container">
+        <div class="alert alert-info">{{ doctors | length }} doctors were found.</div>
+        {% if request.GET.msg %}
+        <div class="alert alert-{{request.GET.type}}">{{ request.GET.msg }}</div>
+        {% endif %}
+        <div class="row">
+            {% for doctor in doctors %}
+            <div class="col-xs-12 col-md-3 col-lg-3">
+                <div class="card mb-4">
+                    <div class="image-circle" style="background-image: url('/media/{{ doctor.image }}');"></div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ doctor.user.get_full_name }}</h5>
+                        <h6>Score: {{ doctor.show_scoring_average }} <i class="fa fa-star"></i></h6>
+                        <ul class="specialities">
+                            {% for speciality in doctor.specialities.all %}
+                            <li>{{ speciality }}</li>
+                            {% endfor %}
+                        </ul>
+                        <div class="address mb-2" title="{{doctor.addresses.first.address}}"
+                            alt="{{doctor.addresses.first.address}}">
+                            {{ doctor.addresses.first.address | default:"No address." | slice:":15" }}...
+                        </div>
+                        <a href="{% url 'profile' doctor.user.id %}" class="btn btn-primary btn-card">See details</a>
+                        {% if user.is_authenticated %}
+                        <button class="btn btn-danger btn-card"><i class="fa fa-heart"></i>Favorites</button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <nav aria-label="Page navigation" class="navigation">
+                <ul class="pagination">
+                    {% if doctor.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1{{ parameters }}">&laquo; First</a></li>
+                    <li class="page-item"><a class="page-link"
+                            href="?page={{ doctor.previous_page_number }}{{ parameters }}">Previous</a></li>
+                    {% endif %}
+                    <li class="page-item"><a class="page-link" href="#">Page {{ doctor.number }} of
+                            {{ doctor.paginator.num_pages }}.</a></li>
+                    {% if doctor.has_next %}
+                    <li class="page-item"><a class="page-link"
+                            href="?page={{ doctor.next_page_number }}{{ parameters }}">Next</a></li>
+                    <li class="page-item"><a class="page-link"
+                            href="?page={{ doctor.paginator.num_pages }}{{ parameters }}">Last &raquo;</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+{% endblock %}

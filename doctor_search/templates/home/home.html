@@ -3,14 +3,58 @@
 
 {% block title %}Start{% endblock %}
 
-{% block corecss %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}"
-{% endblock %}
+{% block corecss %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %} 
 
 {% block content %}
-    <div id="content">Hello, world"</div>
+
+<div id="content">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-6 offset-sm-0 offset-md-3 offset-md-3">
+                <form action="{% url 'doctors' %}" method="GET">
+                    <h3 class="text-center">Find a doctor</h3>
+                    <div class="form-row">
+                        <div class="col form-group"><input type="text" class="form-control" name="name"
+                                placeholder="Search by name"></div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <select class="form-control" name="speciality">
+                                <option value="0" selected disabled>Select a specialty</option>
+                                <option value="1">Neurosurgery</option>
+                            </select>
+                        </div>
+                        <div class="col form-group">
+                            <select class="form-control" name="neighborhood">
+                                <option value="0" selected disabled>Select a neighborhood</option>
+                                <option value="1">Sandyford</option>
+                            </select>
+                        </div>
+                        <div class="col form-group">
+                            <select class="form-control" name="state">
+                                <option value="0" selected disabled>Select a district</option>
+                                <option value="1">Dublin 18</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group">
+                            <select class="form-control" name="city">
+                                <option value="0" selected disabled>Select a County</option>
+                                <option value="1">Co. Dublin</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="col form-group mb-0"><button type="submit" class="btn btn-primary">Search</button></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block corejs %}
-    <script src="{% static 'js/home.js' %}"
-{% endblock corejs %}
+<script src="{% static 'js/home.js' %}" {% endblock corejs %}

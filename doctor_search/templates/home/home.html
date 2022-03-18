@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Start{% endblock %}
+
+{% block corecss %}
+    <link rel="stylesheet" href="{% static 'css/home.css' %}"
+{% endblock %}
+
+{% block content %}
+    <div id="content">Hello, world"</div>
+{% endblock %}
+
+{% block corejs %}
+    <script src="{% static 'js/home.js' %}"
+{% endblock corejs %}

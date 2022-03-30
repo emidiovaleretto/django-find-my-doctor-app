@@ -41,3 +41,45 @@ def list_doctor_view(request):
     }
 
     return render(request, template_name='doctors/doctors.html', context=context, status=200)
+
+def add_favorite_view(request):
+    page = request.POST.get('page')
+    name = request.POST.get('name')
+    speciality = request.POST.get('speciality')
+    neighborhood = request.POST.get('neighborhood')
+    district = request.POST.get('district')
+    county = request.POST.get('county')
+    id = request.POST.get('id')
+
+    try:
+        profile = Profile.objects.filter(user=request.user)[0]
+        doctor = Profile.objects.filter(user__id=id)[0]
+        profile.favorites.add(doctor.user)
+        profile.save()
+        msg = 'Doctor successfully added to favorites.'
+        _type = 'success'
+
+    except Exception as e:
+        print(f'Error: {e}')
+        msg = 'Something went wrong while trying to add the doctor to favorites.'
+        _type = 'warning'
+
+    if page:
+        arguments = f'?page={page}'
+    else:
+        arguments = '?page=1'
+
+    if name:
+        arguments += f'&name={name}'
+    if speciality:
+        arguments += f'&speciality={speciality}'
+    if neighborhood:
+        arguments += f'&neighborhood={neighborhood}'
+    if district:
+        arguments += f'&district={district}'
+    if county:
+        arguments += f'&county={speciality}'
+
+    arguments += f'&msg={msg}&type={_type}'
+
+    return redirect(to=f'/doctors/{arguments}')

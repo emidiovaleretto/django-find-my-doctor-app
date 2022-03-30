@@ -23,9 +23,11 @@ def list_doctor_view(request):
         doctors = doctors.filter(addresses__neighborhood=neighborhood)
     else:
         if district is not None:
-            doctors = doctors.filter(addresses__neighborhood__district=district)
+            doctors = doctors.filter(
+                addresses__neighborhood__district=district)
         elif county is not None:
-            doctors = doctors.filter(addresses__neighborhood__city__county=county)
+            doctors = doctors.filter(
+                addresses__neighborhood__city__county=county)
 
     if len(doctors) > 0:
         paginator = Paginator(doctors, 8)
@@ -41,6 +43,7 @@ def list_doctor_view(request):
     }
 
     return render(request, template_name='doctors/doctors.html', context=context, status=200)
+
 
 def add_favorite_view(request):
     page = request.POST.get('page')
@@ -83,3 +86,29 @@ def add_favorite_view(request):
     arguments += f'&msg={msg}&type={_type}'
 
     return redirect(to=f'/doctors/{arguments}')
+
+
+def remove_favorite_view(request):
+    page = request.POST.get('page')
+    id = request.POST.get('id')
+
+    try:
+        profile = Profile.objects.filter(user=request.user)[0]
+        doctor = Profile.objects.filter(user__id=id)[0]
+        profile.favorites.remove(doctor.user)
+        profile.save()
+        msg = 'Doctor successfully removed from favorites'
+        _type = 'success'
+    except Exception as e:
+        print(f'Error: {e}')
+        msg = 'Something went wrong while trying to remove the doctorfrom favorites.'
+        _type = 'warning'
+
+    if page:
+        arguments = f'?page={page}'
+    else:
+        arguments = '?page=1'
+
+    arguments += f'&msg={msg}&type={_type}'
+
+    return redirect(to=f'/profile/{arguments}')

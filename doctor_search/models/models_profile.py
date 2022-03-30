@@ -42,3 +42,7 @@ class Profile(models.Model):
             return 'No reviews'
         except:
             return 'No reviews'
+
+    def show_favorites(self):
+        ids = [result.ids for result in self.favorites.all()]
+        return Profile.objects.filter(user__id__in=ids)

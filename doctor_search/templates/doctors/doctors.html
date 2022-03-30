@@ -27,7 +27,17 @@
                         </div>
                         <a href="{% url 'profile' doctor.user.id %}" class="btn btn-primary btn-card">See details</a>
                         {% if user.is_authenticated %}
-                        <button class="btn btn-danger btn-card"><i class="fa fa-heart"></i>Favorites</button>
+                            <form method="POST" action="/doctors/favorite">
+                                {% csrf_token %}
+                                <input type="hidden" value="{{ doctor.user.id }}" name="id">
+                                <input type="hidden" value="{{ request.GET.page }}" name="page">
+                                <input type="hidden" value="{{ request.GET.name }}" name="name">
+                                <input type="hidden" value="{{ request.GET.speciality }}" name="speciality">
+                                <input type="hidden" value="{{ request.GET.neighborhood }}" name="neighborhood">
+                                <input type="hidden" value="{{ request.GET.district }}" name="district">
+                                <input type="hidden" value="{{ request.GET.county }}" name="county">
+                                <button class="btn btn-danger btn-card"><i class="fa fa-heart"></i>Favorites</button>
+                            </form>
                         {% endif %}
                     </div>
                 </div>

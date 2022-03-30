@@ -46,3 +46,6 @@ class Profile(models.Model):
     def show_favorites(self):
         ids = [result.id for result in self.favorites.all()]
         return Profile.objects.filter(user__id__in=ids)
+
+    def show_ratings(self):
+        return Rating.objects.filter(user_rated=self.user)

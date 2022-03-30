@@ -33,7 +33,10 @@
             </div>
             {% if profile.role == 1 or profile.role == 3 %}
                 <div class="col-xs-12 col-md-9" id="favorite-area">
-                    <div class="alert alert-info">Total of favorites: {{ favorite | length }}</div>
+                    <div class="alert alert-info">Total of favorites: {{ favorites | length }}</div>
+                    {% if request.GET.msg %}
+                    <div class="alert alert-{{request.GET.type}}">{{ request.GET.msg }}</div>
+                    {% endif %}            
                     <div class="row">
                         {% for favorite in favorites %}
                         <div class="col-xs-12 col-md-4 col-lg-4">

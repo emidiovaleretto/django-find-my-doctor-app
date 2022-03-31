@@ -40,6 +40,7 @@ def edit_profile(request):
     profile = get_object_or_404(Profile, user=request.user)
 
     is_email_unused = True
+    message = None
 
     if request.method == 'POST':
         profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
@@ -54,10 +55,27 @@ def edit_profile(request):
     if profile_form.is_valid() and user_form.is_valid() and is_email_unused:
         profile_form.save()
         user_form.save()
+        message = {
+            'type': 'success',
+            'text': 'Data successfully updated'
+        }
+    else:
+        if request.method == 'POST':
+            if is_email_unused:
+                message = {
+                    'type': 'danger',
+                    'text': 'Invalid data.'
+                }
+            else:
+                message = {
+                    'type': 'warning',
+                    'text': f"The email address \"{request.POST['email']}\" is already in use."
+                }
 
     context = {
         'profile_form': profile_form,
-        'user_form': user_form
+        'user_form': user_form,
+        'message': message
     }
 
     return render(request, 'user/profile.html', context=context)

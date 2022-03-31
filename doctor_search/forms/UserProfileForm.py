@@ -1,5 +1,6 @@
 from django.forms import ModelForm
 from django import forms
+from django.contrib.auth.models import User
 from doctor_search.models.models_profile import Profile
 
 
@@ -28,6 +29,33 @@ class UserProfileForm(ModelForm):
                 'type': 'date'
             }),
             'image': forms.FileInput(attrs={
+                'class': 'form-control'
+            })
+        }
+
+
+class UserForm(ModelForm):
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'first_name',
+            'last_name',
+        ]
+
+        widgets = {
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control'
+            }),
+            'username': forms.TextInput(attrs={
                 'class': 'form-control'
             })
         }

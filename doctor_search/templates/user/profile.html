@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block corecss %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+
+{% block content %}
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-6 col-lg-6 offset-md-3 offset-lg-3" method="POST" action="">
+                {% csrf_token %}
+                {% for form in profile_form %}
+                    {% if not form.is_hidden %}
+                        <div class="form-group col-md-6">
+                            {{ form.label }}
+                            {{ form }}
+                        </div>
+                    {% else %}
+                        {{ form }}
+                    {% endif %}
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

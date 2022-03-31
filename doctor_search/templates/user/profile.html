@@ -7,18 +7,40 @@
 <div id="content">
     <div class="container-fluid">
         <div class="row">
-            <form class="col-md-6 col-lg-6 offset-md-3 offset-lg-3" method="POST" action="">
-                {% csrf_token %}
-                {% for form in profile_form %}
+            <form class="col-md-6 col-lg-6 offset-md-3 offset-lg-3" method="POST" action="" enctype="multipart/form-data">
+                {% if message is not None %}
+                <div class="alert alert-{{ message.type }}">{{ message.text }}</div>
+                {% endif %}
+                <div class="row">
+                    {% csrf_token %}
+                    {% for form in user_form %}
                     {% if not form.is_hidden %}
                         <div class="form-group col-md-6">
                             {{ form.label }}
                             {{ form }}
+                            {% for error in form.errors %}
+                            <div class="invalid-feedback" style="display: initial;">{{ error }}</div>
+                            {% endfor %}
                         </div>
-                    {% else %}
-                        {{ form }}
-                    {% endif %}
-                {% endfor %}
+                        {% else %}
+                            {{ form }}
+                        {% endif %}
+                    {% endfor %}
+                    {% for form in profile_form %}
+                        {% if not form.is_hidden %}
+                        <div class="form-group col-md-6">
+                            {{ form.label }}
+                            {{ form }}
+                            {% for error in form.errors %}
+                            <div class="invalid-feedback" style="display: initial;">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        {% else %}
+                            {{ form }}
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
             </form>
         </div>
     </div>

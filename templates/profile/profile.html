@@ -17,7 +17,7 @@
                 {% endif %}
 
                 {% if profile.user.id == request.user.id %}
-                <a id="icon-edit" href="#"><i class="fa fa-edit"></i></a>
+                <a id="icon-edit" href="{% url 'edit-profile' %}"><i class="fa fa-edit"></i></a>
                 {% endif %}
 
                 <ul class="list-group">

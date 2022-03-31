@@ -27,7 +27,7 @@ class UserProfileForm(ModelForm):
                 'class': 'form-control',
                 'type': 'date'
             }),
-            'image': forms.FileField(attrs={
+            'image': forms.FileInput(attrs={
                 'class': 'form-control'
             })
         }

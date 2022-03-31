@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from doctor_search.models import Profile
 from django.core.paginator import Paginator
-from doctor_search.forms.UserProfileForm import UserProfileForm
+from doctor_search.forms.UserProfileForm import UserProfileForm, UserForm
 
 
 def list_profile_view(request, id=None):
@@ -38,10 +38,26 @@ def list_profile_view(request, id=None):
 
 def edit_profile(request):
     profile = get_object_or_404(Profile, user=request.user)
-    profile_form = UserProfileForm(instance=profile)
+
+    is_email_unused = True
+
+    if request.method == 'POST':
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
+        user_form = UserForm(instance=request.user)
+        verify_email = Profile.objects.filter(
+            user__email=request.POST['email']).exclude(user__id=request.user.id).first()
+        is_email_unused = verify_email is None
+    else:
+        profile_form = UserProfileForm(instance=profile)
+        user_form = UserForm(instance=request.user)
+
+    if profile_form.is_valid() and user_form.is_valid() and is_email_unused:
+        profile_form.save()
+        user_form.save()
 
     context = {
-        'profile_form': profile_form
+        'profile_form': profile_form,
+        'user_form': user_form
     }
 
     return render(request, 'user/profile.html', context=context)

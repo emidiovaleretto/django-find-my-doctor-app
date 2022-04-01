@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-from doctor_search.models.models_profile import Profile
-from doctor_search.models.models_rating import Rating
+from doctor_search.models import Profile, Rating
+from doctor_search.forms.DoctorForm import DoctorRatingForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 
@@ -112,3 +112,40 @@ def remove_favorite_view(request):
     arguments += f'&msg={msg}&type={_type}'
 
     return redirect(to=f'/profile/{arguments}')
+
+
+def rate_doctor(request, doctor_id=None):
+    doctor = Profile.objects.filter(user__id=doctor_id).first()
+    rating = Rating.objects.filter(
+        user=request.user, user_rated=doctor.user).first()
+    message = None
+    initial = {
+        'user': request.user,
+        'user_rated': doctor.user
+    }
+
+    if request.method == 'POST':
+        rating_form = DoctorRatingForm(
+            request.POST, instance=rating, initial=initial)
+
+    if rating_form.is_valid():
+        rating_form.save()
+        message = {
+            'type': 'success',
+            'text': 'Thank you! Your rating has been saved successfully.'
+        }
+
+    else:
+        if request.method == 'POST':
+            message = {
+                'type': 'danger',
+                'text': 'Something went wrong while trying to save your rating.'
+            }
+
+    context = {
+        'rating_form': rating_form,
+        'doctor': doctor,
+        'message': message
+    }
+
+    return render(request, 'doctor/rating.html', context=context)

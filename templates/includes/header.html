@@ -14,23 +14,23 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'edit-profile' %}" class="nav-link">
                     <i class="fa fa-edit"></i>Edit Profile
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'logout' %}" class="nav-link">
                     <i class="fa fa-sign-out"></i>Sign out
                 </a>
             </li>
             {% else %}
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'login' %}" class="nav-link">
                     <i class="fa fa-sign-in"></i>Sign in
                 </a>
             </li>
             <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{% url 'register' %}" class="nav-link">
                     <i class="fa fa-edit"></i>Sign up
                 </a>
             </li>

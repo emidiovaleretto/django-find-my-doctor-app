@@ -14,7 +14,7 @@
                 {% if message is not None %}
                 <div class="akert alert-{{ message.type }}">{{ message.text }}</div>
                 {% endif %}
-                {% for form in login_form %}
+                {% for form in auth_form %}
                 <div class="form-group">
                     {{ form.label }}
                     {{ form }}

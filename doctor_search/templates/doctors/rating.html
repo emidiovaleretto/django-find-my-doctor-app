@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block corecss %}<link rel="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}
+
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-4 col-lg-4 offset-md-4 offset-lg-4" method="POST" action="">
+                {% csrf_token %}
+                <h3 class="text-center">Doctor's Rating | Dr. {{ doctor.user.get_full_name }}</h3>
+                {% if message is not None %}
+                    <div class="alert alert-{{ message.type }}">{{ message.text }}</div>
+                {% endif %}
+                {% for form in rating_form %}
+                    {% if not form.is_hidden %}
+                        <div class="form-group">
+                            {{ form.label }}
+                            {{ form }}
+                            {% for error in form.errors %}
+                                <div class="invalid-feedback" style="display: initial;">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        {{ form }}
+                    {% endif %}
+                {% endfor %}
+                <a href="{% url 'profile' doctor.user.id %}">Go back to Doctor's Profile</a>
+                <button type="submit" class="btn btn-primary">Make a rating</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

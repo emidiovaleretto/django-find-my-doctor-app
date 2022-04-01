@@ -113,7 +113,7 @@ def remove_favorite_view(request):
 
     return redirect(to=f'/profile/{arguments}')
 
-
+@login_required
 def rate_doctor(request, doctor_id=None):
     doctor = Profile.objects.filter(user__id=doctor_id).first()
     rating = Rating.objects.filter(
@@ -127,6 +127,8 @@ def rate_doctor(request, doctor_id=None):
     if request.method == 'POST':
         rating_form = DoctorRatingForm(
             request.POST, instance=rating, initial=initial)
+    else:
+        rating_form = DoctorRatingForm(instance=rating, initial=initial)
 
     if rating_form.is_valid():
         rating_form.save()
@@ -148,4 +150,4 @@ def rate_doctor(request, doctor_id=None):
         'message': message
     }
 
-    return render(request, 'doctor/rating.html', context=context)
+    return render(request, 'doctors/rating.html', context=context)

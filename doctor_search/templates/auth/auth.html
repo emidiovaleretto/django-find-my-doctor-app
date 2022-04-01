@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ title }}{% endblock %}
+{% block corecss %}
+<link ref="stylesheet" href="{% static 'css/home.css' %}">{% endblock %}
+{% block content %}
+
+<div id="content">
+    <div class="container-fluid">
+        <div class="row">
+            <form class="col-md-4 col-lg-4 offset-md-4 offset-lg-4" action="" method="POST">
+                {% csrf_token %}
+                <h3 class="text-center">{{ title }}</h3>
+                {% if message is not None %}
+                <div class="akert alert-{{ message.type }}">{{ message.text }}</div>
+                {% endif %}
+                {% for form in login_form %}
+                <div class="form-group">
+                    {{ form.label }}
+                    {{ form }}
+                    {% for error in form.errors %}
+                    <div class="invalid-feedback" style="display: initial;">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                <a href="{{ link_href }}"
+                    style="display: block; text-align: center; margin-bottom: 20px;">{{ link_text }}</a>
+                <button type="submit" class="btn btn-primary">{{ button_text }}</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
